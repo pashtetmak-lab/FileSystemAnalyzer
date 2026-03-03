@@ -8,5 +8,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable(FileSystemAnalyzer
         main.cpp
-        src/application.cpp
+        src/Application.cpp
+        src/FileSystemScanner.cpp
 )

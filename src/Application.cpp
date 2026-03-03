@@ -1,8 +1,5 @@
 #include "../include/Application.h"
 
-#include <iostream>
-#include <utility>
-
 Application::Application()
     : name_("FileSystemAnalyzer") {}
 
