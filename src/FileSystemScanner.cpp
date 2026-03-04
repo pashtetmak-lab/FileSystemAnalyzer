@@ -42,7 +42,7 @@ FileSystemScanner::Scan(const ScanConfig& cfg) const {
             entry.path = it->path();
             entry.depth = depth;
 
-            entry.is_directory = it->is_directory(); // uses iterator cached status
+            entry.is_directory = it->is_directory();
 
             if (!entry.is_directory) {
                 entry.size_bytes = it->file_size();

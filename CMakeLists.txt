@@ -10,4 +10,6 @@ add_executable(FileSystemAnalyzer
         main.cpp
         src/Application.cpp
         src/FileSystemScanner.cpp
+        src/TreeBuilder.cpp
+        src/FsNode.cpp
 )
