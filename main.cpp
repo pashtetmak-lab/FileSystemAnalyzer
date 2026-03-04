@@ -1,7 +1,7 @@
 #include "include/Application.h"
 #include "include/ArgsParser.h"
 #include "include/FileSystemScanner.h"
-
+#include "include/FsNode.h"
 /*
 int main() {
     Application app;
@@ -45,4 +45,26 @@ int main(int argc, char** argv) {
     return 0;
 }
 
+*/
+
+/*
+//тест для FsNode:
+#include <iostream>
+
+int main()
+{
+    FsNode root(FsNode::DirInfo{".", 0});
+
+    auto file = std::make_unique<FsNode>(
+        FsNode::FileInfo{"file.txt", 100}
+    );
+
+    root.addChild(std::move(file));
+
+    std::cout << "Children count: "
+              << root.children().size()
+              << std::endl;
+
+    return 0;
+}
 */
