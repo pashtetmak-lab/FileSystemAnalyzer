@@ -12,4 +12,6 @@ add_executable(FileSystemAnalyzer
         src/FileSystemScanner.cpp
         src/TreeBuilder.cpp
         src/FsNode.cpp
+        src/SizeCalculator.cpp
+        src/TreePrinter.cpp
 )
