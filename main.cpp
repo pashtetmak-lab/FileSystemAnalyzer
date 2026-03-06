@@ -3,7 +3,66 @@
 #include "include/FileSystemScanner.h"
 #include "include/FsNode.h"
 #include "include/TreeBuilder.h"
+#include "include/Application.h"
+#include "include/ArgsParser.h"
+#include "include/FileSystemScanner.h"
+#include "include/FsNode.h"
+#include "include/TreeBuilder.h"
+#include <iostream>
 
+
+void PrintTree(const FsNode& node, int indent = 0)
+{
+    for (int i = 0; i < indent; ++i)
+        std::cout << "  ";
+
+    if (node.isFile())
+    {
+        const auto& file = node.file();
+        std::cout << file.path.filename().string()
+                  << " (" << file.size_bytes << " B)"
+                  << std::endl;
+    }
+    else
+    {
+        const auto& dir = node.directory();
+        std::cout << dir.path.filename().string()
+                  << "/"
+                  << std::endl;
+
+        for (const auto& child : node.children())
+        {
+            PrintTree(*child, indent + 1);
+        }
+    }
+}
+
+int main()
+{
+    FileSystemScanner scanner;
+
+    FileSystemScanner::ScanConfig config;
+    config.root = ".";
+
+    auto entries = scanner.Scan(config);
+
+    std::cout << "Scanned entries: " << entries.size() << std::endl;
+
+    TreeBuilder builder;
+
+    auto root = builder.Build(entries);
+
+    if (!root)
+    {
+        std::cout << "Tree build failed\n";
+        return 1;
+    }
+
+    std::cout << "\nFilesystem tree:\n";
+    PrintTree(*root);
+
+    return 0;
+}
 /*
 int main() {
     Application app;
@@ -66,7 +125,7 @@ int main()
 
     return 0;
 }
-*/
+
 
 
 // Test for TreeBuilder:
