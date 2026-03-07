@@ -10,32 +10,16 @@
 #include "include/TreeBuilder.h"
 #include <iostream>
 
+#include "include/Application.h"
+#include "include/ArgsParser.h"
+#include "include/FileSystemScanner.h"
+#include "include/FsNode.h"
+#include "include/TreeBuilder.h"
+#include <iostream>
 
-void PrintTree(const FsNode& node, int indent = 0)
-{
-    for (int i = 0; i < indent; ++i)
-        std::cout << "  ";
-
-    if (node.isFile())
-    {
-        const auto& file = node.file();
-        std::cout << file.path.filename().string()
-                  << " (" << file.size_bytes << " B)"
-                  << std::endl;
-    }
-    else
-    {
-        const auto& dir = node.directory();
-        std::cout << dir.path.filename().string()
-                  << "/"
-                  << std::endl;
-
-        for (const auto& child : node.children())
-        {
-            PrintTree(*child, indent + 1);
-        }
-    }
-}
+#include <iostream>
+#include "include/SizeCalculator.h"
+#include "include/TreePrinter.h"
 
 int main()
 {
@@ -44,9 +28,11 @@ int main()
     FileSystemScanner::ScanConfig config;
     config.root = ".";
 
+    std::cout << "Scanning filesystem...\n";
+
     auto entries = scanner.Scan(config);
 
-    std::cout << "Scanned entries: " << entries.size() << std::endl;
+    std::cout << "Entries found: " << entries.size() << std::endl;
 
     TreeBuilder builder;
 
@@ -54,12 +40,17 @@ int main()
 
     if (!root)
     {
-        std::cout << "Tree build failed\n";
+        std::cout << "Failed to build tree\n";
         return 1;
     }
 
+    SizeCalculator calculator;
+    calculator.Calculate(*root);
+
     std::cout << "\nFilesystem tree:\n";
-    PrintTree(*root);
+
+    TreePrinter printer;
+    printer.Print(*root);
 
     return 0;
 }
