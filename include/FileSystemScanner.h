@@ -26,6 +26,5 @@ public:
         int depth{0};
     };
 
-    // Scan filesystem and return a flat list of entries.
     [[nodiscard]] std::vector<ScanEntry> Scan(const ScanConfig& cfg) const;
 };

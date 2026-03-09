@@ -15,7 +15,4 @@ public:
 private:
     [[nodiscard]] static std::unique_ptr<FsNode>
     MakeNode(const FileSystemScanner::ScanEntry& entry);
-
-    [[nodiscard]] static std::filesystem::path
-    FindParentPath(const FileSystemScanner::ScanEntry& entry);
 };
