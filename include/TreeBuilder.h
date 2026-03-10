@@ -9,10 +9,10 @@
 
 class TreeBuilder {
 public:
-    [[nodiscard]] std::unique_ptr<FsNode>
+    std::unique_ptr<FsNode>
     Build(std::span<const FileSystemScanner::ScanEntry> entries) const;
 
 private:
-    [[nodiscard]] static std::unique_ptr<FsNode>
+    static std::unique_ptr<FsNode>
     MakeNode(const FileSystemScanner::ScanEntry& entry);
 };

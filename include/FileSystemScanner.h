@@ -24,5 +24,5 @@ public:
         int depth{0};
     };
 
-    [[nodiscard]] std::vector<ScanEntry> Scan(const ScanConfig& cfg) const;
+    std::vector<ScanEntry> Scan(const ScanConfig& cfg) const;
 };
