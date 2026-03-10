@@ -1,7 +1,5 @@
 #pragma once
 
-//FileSystemScanner - scans through file system and returns directories/files
-
 #include <filesystem>
 #include <optional>
 #include <vector>
@@ -15,10 +13,10 @@ public:
 
     struct ScanEntry {
 
-        std::filesystem::path path; // full path to node
+        std::filesystem::path path;
 
         bool is_directory{
-            false //default
+            false
         };
 
         std::uintmax_t size_bytes{0};
