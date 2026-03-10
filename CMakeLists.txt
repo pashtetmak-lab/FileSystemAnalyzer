@@ -18,3 +18,26 @@ add_executable(FileSystemAnalyzer
 )
 
 target_include_directories(FileSystemAnalyzer PRIVATE include)
+
+enable_testing()
+
+add_executable(unit_tests
+        tests/test_main.cpp
+        tests/test_args_parser.cpp
+        tests/test_file_system_scanner.cpp
+        tests/test_fs_node.cpp
+        tests/test_size_calculator.cpp
+        tests/test_tree_builder.cpp
+        tests/test_tree_printer.cpp
+        src/Application.cpp
+        src/ArgsParser.cpp
+        src/FileSystemScanner.cpp
+        src/TreeBuilder.cpp
+        src/FsNode.cpp
+        src/SizeCalculator.cpp
+        src/TreePrinter.cpp
+)
+
+target_include_directories(unit_tests PRIVATE include)
+
+add_test(NAME unit_tests COMMAND unit_tests)
