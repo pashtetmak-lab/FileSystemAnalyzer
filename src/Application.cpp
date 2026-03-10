@@ -7,23 +7,29 @@
 
 int Application::Run(int argc, char* argv[])
 {
-    std::filesystem::path root_path;
-    std::optional<int> max_depth;
+    try {
+        std::filesystem::path root_path;
+        std::optional<int> max_depth;
 
-    ArgsParser parser;
-    parser.Parse(argc, argv, root_path, max_depth);
+        ArgsParser parser;
+        parser.Parse(argc, argv, root_path, max_depth);
 
-    FileSystemScanner scanner;
-    auto entries = scanner.Scan(root_path, max_depth);
+        FileSystemScanner scanner;
+        auto entries = scanner.Scan(root_path, max_depth);
 
-    TreeBuilder builder;
-    auto root = builder.BuildTree(entries);
+        TreeBuilder builder;
+        auto root = builder.BuildTree(entries);
 
-    SizeCalculator calculator;
-    calculator.Calculate(*root);
+        SizeCalculator calculator;
+        calculator.Calculate(*root);
 
-    TreePrinter printer;
-    printer.Print(*root);
+        TreePrinter printer;
+        printer.Print(*root);
 
-    return 0;
+        return 0;
+    }
+    catch (const std::exception& err) {
+        std::cerr << "Error: " << err.what() << std::endl;
+        return 1;
+    }
 }
