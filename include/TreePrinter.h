@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FsNode.h"
+#include <iostream>
 
 class TreePrinter
 {

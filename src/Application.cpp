@@ -1,6 +1,3 @@
-#include <exception>
-#include <iostream>
-
 #include "../include/ArgsParser.h"
 #include "../include/FileSystemScanner.h"
 #include "../include/SizeCalculator.h"
@@ -10,36 +7,23 @@
 
 int Application::Run(int argc, char* argv[])
 {
-    try
-    {
-        std::filesystem::path root_path;
-        std::optional<int> max_depth;
-        ArgsParser parser;
-        parser.Parse(argc, argv, root_path, max_depth);
+    std::filesystem::path root_path;
+    std::optional<int> max_depth;
 
-        FileSystemScanner scanner;
-        auto entries = scanner.Scan(root_path, max_depth);
+    ArgsParser parser;
+    parser.Parse(argc, argv, root_path, max_depth);
 
-        TreeBuilder builder;
-        auto root = builder.BuildTree(entries);
+    FileSystemScanner scanner;
+    auto entries = scanner.Scan(root_path, max_depth);
 
-        if (!root)
-        {
-            std::cerr << "Error: failed to build file system tree\n";
-            return 1;
-        }
+    TreeBuilder builder;
+    auto root = builder.BuildTree(entries);
 
-        SizeCalculator calculator;
-        calculator.Calculate(*root);
+    SizeCalculator calculator;
+    calculator.Calculate(*root);
 
-        TreePrinter printer;
-        printer.Print(*root);
+    TreePrinter printer;
+    printer.Print(*root);
 
-        return 0;
-    }
-    catch (std::exception& ex)
-    {
-        std::cerr << "Error: " << ex.what() << '\n';
-        return 1;
-    }
+    return 0;
 }
