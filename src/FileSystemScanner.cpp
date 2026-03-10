@@ -1,73 +1,50 @@
 #include "../include/FileSystemScanner.h"
 
-std::vector<FileSystemScanner::ScanEntry>
-FileSystemScanner::Scan(const ScanConfig& cfg) const
+//вектор с путями к файлам и директориям, потом отправляет их в TreeBuilder
+std::vector<std::filesystem::path>
+FileSystemScanner::Scan(
+    const std::filesystem::path& root,
+    std::optional<int> max_depth
+)
 {
-    std::vector<ScanEntry> result;
-    std::error_code ec;
+    std::vector<std::filesystem::path> result;
 
-    if (!std::filesystem::exists(cfg.root, ec) || ec) {
-        return result;
-    }
-
-    const bool root_is_dir = std::filesystem::is_directory(cfg.root, ec);
-    if (ec) {
-        return result;
-    }
-
-    ScanEntry root_entry;
-    root_entry.path = cfg.root;
-    root_entry.is_directory = root_is_dir;
-    root_entry.depth = 0;
-    if (!root_is_dir) {
-        root_entry.size_bytes = std::filesystem::file_size(cfg.root, ec);
-        if (ec) {
-            root_entry.size_bytes = 0;
-        }
-    }
-    result.push_back(root_entry);
-
-    if (!root_is_dir) {
-        return result;
-    }
-
-    const auto options = std::filesystem::directory_options::skip_permission_denied;
-    std::filesystem::recursive_directory_iterator it(cfg.root, options, ec);
-    std::filesystem::recursive_directory_iterator end;
-    if (ec) {
-        return result;
-    }
-
-    for (; it != end; it.increment(ec)) {
-        if (ec) {
-            ec.clear();
-            continue;
+    try
+    {
+        if (!std::filesystem::exists(root)) {
+            return result;
         }
 
-        const int depth = it.depth() + 1;
-        if (cfg.max_depth && depth > *cfg.max_depth) {
-            it.disable_recursion_pending();
-            continue;
+        result.push_back(root);
+
+        if (!std::filesystem::is_directory(root)) {
+            return result;
         }
 
-        ScanEntry entry;
-        entry.path = it->path();
-        entry.depth = depth;
-        entry.is_directory = it->is_directory(ec);
-        if (ec) {
-            ec.clear();
-            continue;
-        }
+        //сканирование с итератором
+        std::filesystem::recursive_directory_iterator current(
+            root,
+            std::filesystem::directory_options::skip_permission_denied //чтобы не падалор если нет доступа к папке
+        );
+        std::filesystem::recursive_directory_iterator end;
 
-        if (!entry.is_directory) {
-            entry.size_bytes = it->file_size(ec);
-            if (ec) {
-                ec.clear();
-                entry.size_bytes = 0;
+        while (current != end) //цикл обхода файлов и папок
+        {
+            if (max_depth.has_value() && current.depth() + 1 > max_depth.value()) //+1 чтобы от root уйти
+            {
+                current.disable_recursion_pending(); //не идти глубже max_depth
             }
-        }
+            else {
+                result.push_back(current->path());
+            }
 
-        result.push_back(entry);
+            ++current;
+        }
+    }
+
+    //если возникли проблемы то вернуть что успело пройти
+    catch (std::filesystem::filesystem_error&) {
+        return result;
     }
 
     return result;
