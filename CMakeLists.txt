@@ -17,8 +17,9 @@ add_executable(FileSystemAnalyzer
         src/TreePrinter.cpp
 )
 
-#тест для tree builder
 target_include_directories(FileSystemAnalyzer PRIVATE include)
+
+#тест для tree builder
 
 enable_testing()
 
