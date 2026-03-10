@@ -1,5 +1,3 @@
-#include "../include/Application.h"
-
 #include <exception>
 #include <iostream>
 
@@ -8,19 +6,22 @@
 #include "../include/SizeCalculator.h"
 #include "../include/TreeBuilder.h"
 #include "../include/TreePrinter.h"
+#include "../include/Application.h"
 
-int Application::Run(int argc, char* argv[]) const
+int Application::Run(int argc, char* argv[])
 {
     try
     {
+        std::filesystem::path root_path;
+        std::optional<int> max_depth;
         ArgsParser parser;
-        const auto config = parser.Parse(argc, argv);
+        parser.Parse(argc, argv, root_path, max_depth);
 
         FileSystemScanner scanner;
-        const auto entries = scanner.Scan(config);
+        auto entries = scanner.Scan(root_path, max_depth);
 
         TreeBuilder builder;
-        auto root = builder.Build(entries);
+        auto root = builder.BuildTree(entries);
 
         if (!root)
         {
@@ -36,7 +37,7 @@ int Application::Run(int argc, char* argv[]) const
 
         return 0;
     }
-    catch (const std::exception& ex)
+    catch (std::exception& ex)
     {
         std::cerr << "Error: " << ex.what() << '\n';
         return 1;

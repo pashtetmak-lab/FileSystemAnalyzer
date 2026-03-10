@@ -5,5 +5,5 @@
 class SizeCalculator
 {
 public:
-    std::uintmax_t Calculate(FsNode& node) const;
+    std::uintmax_t Calculate(FsNode& node);
 };

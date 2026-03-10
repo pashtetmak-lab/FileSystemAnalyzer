@@ -1,22 +1,29 @@
 #include "../include/SizeCalculator.h"
 
-std::uintmax_t SizeCalculator::Calculate(FsNode& node) const
+#include <filesystem>
+
+std::uintmax_t SizeCalculator::Calculate(FsNode& node)
 {
-    if (node.isFile())
+    // файл?
+    if (node.isFile() == true)
     {
-        return node.file().size_bytes;
+        auto& file = node.file(); //ссылка чтобы не создавать копию
+        file.size_bytes = std::filesystem::file_size(file.path);
+        return file.size_bytes;
     }
-
-    auto& dir = node.directory();
-
-    std::uintmax_t sum = 0;
-
-    for (auto& child : node.children())
+    else //если директория
     {
-        sum += Calculate(*child);
+        auto& dir = node.directory();
+
+        std::uintmax_t sum = 0;
+
+        for (auto& child : node.children())
+        {
+            sum += Calculate(*child);
+        }
+
+        dir.total_size = sum;
+
+        return sum;
     }
-
-    dir.total_size = sum;
-
-    return sum;
 }

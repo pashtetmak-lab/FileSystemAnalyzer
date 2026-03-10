@@ -2,5 +2,7 @@
 
 class Application {
 public:
-    int Run(int argc, char* argv[]) const;
+    // argc - кол-во адресов
+    // argv[] - массив из указателей на них
+    int Run(int argc, char* argv[]);
 };

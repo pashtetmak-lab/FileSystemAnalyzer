@@ -1,6 +1,6 @@
 #include "../include/TreePrinter.h"
 
-void TreePrinter::Print(const FsNode& node, int indent) const
+void TreePrinter::Print(const FsNode& node, int indent)
 {
     for (int i = 0; i < indent; ++i)
     {
@@ -9,7 +9,7 @@ void TreePrinter::Print(const FsNode& node, int indent) const
 
     if (node.isFile())
     {
-        const auto& file = node.file();
+        auto& file = node.file();
 
         std::cout << file.path.filename().string()
                   << " (" << file.size_bytes << " B)"
@@ -17,13 +17,13 @@ void TreePrinter::Print(const FsNode& node, int indent) const
     }
     else
     {
-        const auto& dir = node.directory();
+        auto& dir = node.directory();
 
         std::cout << dir.path.filename().string()
                   << "/ (" << dir.total_size << " B)"
                   << std::endl;
 
-        for (const auto& child : node.children())
+        for (auto& child : node.children())
         {
             Print(*child, indent + 1);
         }

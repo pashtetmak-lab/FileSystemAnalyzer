@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <vector>
 
+// читает пути из вектора, не меняя их
 std::unique_ptr<FsNode>
 TreeBuilder::BuildTree(const std::vector<std::filesystem::path>& paths)
 {

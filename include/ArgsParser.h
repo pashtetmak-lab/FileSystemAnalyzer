@@ -1,8 +1,15 @@
 #pragma once
-#include "FileSystemScanner.h"
 
-class ArgsParser
-{
+#include <filesystem>
+#include <optional>
+
+class ArgsParser {
 public:
-    FileSystemScanner::ScanConfig Parse(int argc, char* argv[]) const;
+    void Parse(
+        // argc - кол-во адресов
+        // argv[] - массив из указателей на них
+        int argc, char* argv[],
+        std::filesystem::path& root,
+        std::optional<int>& max_depth
+    );
 };

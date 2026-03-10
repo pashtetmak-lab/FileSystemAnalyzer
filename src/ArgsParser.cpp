@@ -2,14 +2,19 @@
 
 #include <string>
 
-FileSystemScanner::ScanConfig
-ArgsParser::Parse(int argc, char* argv[]) const
+void ArgsParser::Parse (
+    int argc,
+    char* argv[],
+    std::filesystem::path& root,
+    std::optional<int>& max_depth
+)
 {
-    FileSystemScanner::ScanConfig config;
+    root = "."; //default
+    max_depth = std::nullopt; //default
 
     if (argc >= 2)
     {
-        config.root = argv[1];
+        root = argv[1];
     }
 
     for (int i = 2; i < argc; ++i)
@@ -18,10 +23,8 @@ ArgsParser::Parse(int argc, char* argv[]) const
 
         if (arg == "--depth" && i + 1 < argc)
         {
-            config.max_depth = std::stoi(argv[i + 1]);
+            max_depth = std::stoi(argv[i + 1]);
             ++i;
         }
     }
-
-    return config;
 }
