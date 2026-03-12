@@ -2,6 +2,11 @@
 
 #include <filesystem>
 
+
+// конструктор класса SizeCalculator
+SizeCalculator::SizeCalculator(std::shared_ptr<Config> config)
+    : config_(std::move(config)) {} //std::move перенос без копирования
+
 std::uintmax_t SizeCalculator::Calculate(FsNode& node)
 {
     // файл?

@@ -1,5 +1,8 @@
 #include "../include/TreePrinter.h"
 
+TreePrinter::TreePrinter(std::shared_ptr<Config> config)
+    : config_(std::move(config)) {}
+
 void TreePrinter::Print(const FsNode& node, int indent)
 {
     for (int i = 0; i < indent; ++i)

@@ -4,26 +4,28 @@
 #include "../include/TreeBuilder.h"
 #include "../include/TreePrinter.h"
 #include "../include/Application.h"
+#include "../include/Config.h"
+
+#include <memory>
 
 int Application::Run(int argc, char* argv[])
 {
     try {
-        std::filesystem::path root_path;
-        std::optional<int> max_depth;
+        auto config = std::make_shared<Config>();
 
         ArgsParser parser;
-        parser.Parse(argc, argv, root_path, max_depth);
+        parser.Parse(argc, argv, *config);
 
         FileSystemScanner scanner;
-        auto entries = scanner.Scan(root_path, max_depth);
+        auto entries = scanner.Scan(config->root_path, config->max_depth);
 
         TreeBuilder builder;
         auto root = builder.BuildTree(entries);
 
-        SizeCalculator calculator;
+        SizeCalculator calculator(config);
         calculator.Calculate(*root);
 
-        TreePrinter printer;
+        TreePrinter printer(config);
         printer.Print(*root);
 
         return 0;

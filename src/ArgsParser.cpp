@@ -11,15 +11,14 @@ constexpr bool IsValidDepth(int depth)
 void ArgsParser::Parse (
     int argc,
     char* argv[],
-    std::filesystem::path& root,
-    std::optional<int>& max_depth
+    Config& config
 ) {
-    root = "."; //default
-    max_depth = std::nullopt; //default
+    config.root_path = "."; //default
+    config.max_depth = std::nullopt; //default
 
     if (argc >= 2)
     {
-        root = argv[1];
+        config.root_path = argv[1];
     }
 
     for (int i = 2; i < argc; ++i) {
@@ -34,7 +33,7 @@ void ArgsParser::Parse (
                 throw std::invalid_argument("Depth must be non-negative");
             }
 
-            max_depth = depth;
+            config.max_depth = depth;
             ++i;
         }
     }

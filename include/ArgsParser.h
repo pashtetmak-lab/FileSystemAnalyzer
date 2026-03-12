@@ -1,7 +1,6 @@
 #pragma once
 
-#include <filesystem>
-#include <optional>
+#include "Config.h"
 
 class ArgsParser {
 public:
@@ -9,7 +8,6 @@ public:
         // argc - кол-во адресов
         // argv[] - массив из указателей на них
         int argc, char* argv[],
-        std::filesystem::path& root,
-        std::optional<int>& max_depth
+        Config& config
     );
 };

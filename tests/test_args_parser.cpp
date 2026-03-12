@@ -1,8 +1,6 @@
 #include "../include/ArgsParser.h"
 
 #include <cassert>
-#include <filesystem>
-#include <optional>
 #include <stdexcept>
 
 // проверяем что если вызвать программу вообще
@@ -11,24 +9,22 @@
 void TestParseDefaultArgs()
 {
     ArgsParser parser;
-    std::filesystem::path root;
-    std::optional<int> max_depth;
+    Config config;
 
     char arg0[] = "prog";
     char* argv[] = {arg0};
 
-    parser.Parse(1, argv, root, max_depth);
+    parser.Parse(1, argv, config);
 
-    assert(root == std::filesystem::path("."));
-    assert(!max_depth.has_value());
+    assert(config.root_path == std::filesystem::path("."));
+    assert(!config.max_depth.has_value());
 }
 
 // тест что получает и подставляет значения
 void TestParseDepth()
 {
     ArgsParser parser;
-    std::filesystem::path root;
-    std::optional<int> max_depth;
+    Config config;
 
     char arg0[] = "prog";
     char arg1[] = "root";
@@ -36,18 +32,17 @@ void TestParseDepth()
     char arg3[] = "2";
     char* argv[] = {arg0, arg1, arg2, arg3};
 
-    parser.Parse(4, argv, root, max_depth);
+    parser.Parse(4, argv, config);
 
-    assert(root == std::filesystem::path("root"));
-    assert(max_depth == 2);
+    assert(config.root_path == std::filesystem::path("root"));
+    assert(config.max_depth == 2);
 }
 
 // тест что кидает ошибку при отрицательной глубине
 void TestRejectNegativeDepth()
 {
     ArgsParser parser;
-    std::filesystem::path root;
-    std::optional<int> max_depth;
+    Config config;
 
     char arg0[] = "prog";
     char arg1[] = "root";
@@ -59,7 +54,7 @@ void TestRejectNegativeDepth()
 
     try
     {
-        parser.Parse(4, argv, root, max_depth);
+        parser.Parse(4, argv, config);
     }
     // const - объект не будет меняться
     // & - ссылка, чтобы не создавать люшнюю копию
