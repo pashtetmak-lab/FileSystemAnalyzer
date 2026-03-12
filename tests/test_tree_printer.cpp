@@ -1,5 +1,5 @@
-#include "TreePrinter.h"
-#include "FsNode.h"
+#include "../include/TreePrinter.h"
+#include "../include/FsNode.h"
 
 #include <cassert>
 

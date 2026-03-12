@@ -13,6 +13,8 @@ void TestAddChild();
 void TestBuildTreeReturnsRoot();
 void TestBuildTreeCreatesChildren();
 void TestBuildTreeReturnsNullForEmptyInput();
+void TestTreePrinterOutputsNodeNames();
+void TestCalculateDirectorySize();
 
 int main()
 {
@@ -26,6 +28,8 @@ int main()
     TestBuildTreeReturnsRoot();
     TestBuildTreeCreatesChildren();
     TestBuildTreeReturnsNullForEmptyInput();
+    TestTreePrinterOutputsNodeNames();
+    TestCalculateDirectorySize();
 
     std::cout << "unit_tests passed" << std::endl;
     return 0;

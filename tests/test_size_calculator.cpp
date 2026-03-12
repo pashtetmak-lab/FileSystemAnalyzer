@@ -9,10 +9,8 @@ void TestCalculateDirectorySize()
 {
     namespace fs = std::filesystem;
 
-    // root directory
     auto root = std::make_unique<FsNode>(FsNode::DirInfo{fs::path("root"), 0});
 
-    // files
     auto file1 = std::make_unique<FsNode>(FsNode::FileInfo{fs::path("a.txt"), 100});
     auto file2 = std::make_unique<FsNode>(FsNode::FileInfo{fs::path("b.txt"), 200});
 
