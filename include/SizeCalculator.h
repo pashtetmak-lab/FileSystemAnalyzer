@@ -1,5 +1,4 @@
 #pragma once
-
 #include "FsNode.h"
 
 class SizeCalculator
