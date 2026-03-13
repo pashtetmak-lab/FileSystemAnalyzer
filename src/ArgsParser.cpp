@@ -13,8 +13,8 @@ void ArgsParser::Parse (
     char* argv[],
     Config& config
 ) {
-    config.root_path = "."; //default
-    config.max_depth = std::nullopt; //default
+    config.root_path = ".";
+    config.max_depth = std::nullopt;
 
     if (argc >= 2)
     {
@@ -26,9 +26,7 @@ void ArgsParser::Parse (
         std::string arg = argv[i];
 
         if (arg == "--depth" && i + 1 < argc) {
-            // stoi преобразование в int
             int depth = std::stoi(argv[i + 1]);
-
             if (!IsValidDepth(depth)) {
                 throw std::invalid_argument("Depth must be non-negative");
             }
